@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ChessWPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="800">
-    <Grid>
+    <Grid Name="Board">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -27,69 +27,69 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Background="SaddleBrown" />
-        <Label Grid.Row="0" Grid.Column="1" Background="SandyBrown" />
-        <Label Grid.Row="0" Grid.Column="2" Background="SaddleBrown" />
-        <Label Grid.Row="0" Grid.Column="3" Background="SandyBrown" />
-        <Label Grid.Row="0" Grid.Column="4" Background="SaddleBrown" />
-        <Label Grid.Row="0" Grid.Column="5" Background="SandyBrown" />
-        <Label Grid.Row="0" Grid.Column="6" Background="SaddleBrown" />
-        <Label Grid.Row="0" Grid.Column="7" Background="SandyBrown" />
-        <Label Grid.Row="1" Grid.Column="7" Background="SaddleBrown" />
-        <Label Grid.Row="1" Grid.Column="6" Background="SandyBrown" />
-        <Label Grid.Row="1" Grid.Column="5" Background="SaddleBrown" />
-        <Label Grid.Row="1" Grid.Column="4" Background="SandyBrown" />
-        <Label Grid.Row="1" Grid.Column="3" Background="SaddleBrown" />
-        <Label Grid.Row="1" Grid.Column="2" Background="SandyBrown" />
-        <Label Grid.Row="1" Grid.Column="1" Background="SaddleBrown" />
-        <Label Grid.Row="1" Grid.Column="0" Background="SandyBrown" />
-        <Label Grid.Row="2" Grid.Column="0" Background="SaddleBrown" />
-        <Label Grid.Row="2" Grid.Column="1" Background="SandyBrown" />
-        <Label Grid.Row="2" Grid.Column="2" Background="SaddleBrown" />
-        <Label Grid.Row="2" Grid.Column="3" Background="SandyBrown" />
-        <Label Grid.Row="2" Grid.Column="4" Background="SaddleBrown" />
-        <Label Grid.Row="2" Grid.Column="5" Background="SandyBrown" />
-        <Label Grid.Row="2" Grid.Column="6" Background="SaddleBrown" />
-        <Label Grid.Row="2" Grid.Column="7" Background="SandyBrown" />
-        <Label Grid.Row="3" Grid.Column="7" Background="SaddleBrown" />
-        <Label Grid.Row="3" Grid.Column="6" Background="SandyBrown" />
-        <Label Grid.Row="3" Grid.Column="5" Background="SaddleBrown" />
-        <Label Grid.Row="3" Grid.Column="4" Background="SandyBrown" />
-        <Label Grid.Row="3" Grid.Column="3" Background="SaddleBrown" />
-        <Label Grid.Row="3" Grid.Column="2" Background="SandyBrown" />
-        <Label Grid.Row="3" Grid.Column="1" Background="SaddleBrown" />
-        <Label Grid.Row="3" Grid.Column="0" Background="SandyBrown" />
-        <Label Grid.Row="4" Grid.Column="0" Background="SaddleBrown" />
-        <Label Grid.Row="4" Grid.Column="1" Background="SandyBrown" />
-        <Label Grid.Row="4" Grid.Column="2" Background="SaddleBrown" />
-        <Label Grid.Row="4" Grid.Column="3" Background="SandyBrown" />
-        <Label Grid.Row="4" Grid.Column="4" Background="SaddleBrown" />
-        <Label Grid.Row="4" Grid.Column="5" Background="SandyBrown" />
-        <Label Grid.Row="4" Grid.Column="6" Background="SaddleBrown" />
-        <Label Grid.Row="4" Grid.Column="7" Background="SandyBrown" />
-        <Label Grid.Row="5" Grid.Column="7" Background="SaddleBrown" />
-        <Label Grid.Row="5" Grid.Column="6" Background="SandyBrown" />
-        <Label Grid.Row="5" Grid.Column="5" Background="SaddleBrown" />
-        <Label Grid.Row="5" Grid.Column="4" Background="SandyBrown" />
-        <Label Grid.Row="5" Grid.Column="3" Background="SaddleBrown" />
-        <Label Grid.Row="5" Grid.Column="2" Background="SandyBrown" />
-        <Label Grid.Row="5" Grid.Column="1" Background="SaddleBrown" />
-        <Label Grid.Row="5" Grid.Column="0" Background="SandyBrown" />
-        <Label Grid.Row="6" Grid.Column="0" Background="SaddleBrown" />
-        <Label Grid.Row="6" Grid.Column="1" Background="SandyBrown" />
-        <Label Grid.Row="6" Grid.Column="2" Background="SaddleBrown" />
-        <Label Grid.Row="6" Grid.Column="3" Background="SandyBrown" />
-        <Label Grid.Row="6" Grid.Column="4" Background="SaddleBrown" />
-        <Label Grid.Row="6" Grid.Column="5" Background="SandyBrown" />
-        <Label Grid.Row="6" Grid.Column="6" Background="SaddleBrown" />
-        <Label Grid.Row="6" Grid.Column="7" Background="SandyBrown" />
-        <Label Grid.Row="7" Grid.Column="7" Background="SaddleBrown" />
-        <Label Grid.Row="7" Grid.Column="6" Background="SandyBrown" />
-        <Label Grid.Row="7" Grid.Column="5" Background="SaddleBrown" />
-        <Label Grid.Row="7" Grid.Column="4" Background="SandyBrown" />
-        <Label Grid.Row="7" Grid.Column="3" Background="SaddleBrown" />
-        <Label Grid.Row="7" Grid.Column="2" Background="SandyBrown" />
-        <Label Grid.Row="7" Grid.Column="1" Background="SaddleBrown" />
-        <Label Grid.Row="7" Grid.Column="0" Background="SandyBrown" />
+        <Button Grid.Row="0" Grid.Column="0" Background="SaddleBrown" Click="ButtonClickHandler" />
+        <Button Grid.Row="0" Grid.Column="1" Background="SandyBrown" />
+        <Button Grid.Row="0" Grid.Column="2" Background="SaddleBrown" />
+        <Button Grid.Row="0" Grid.Column="3" Background="SandyBrown" />
+        <Button Grid.Row="0" Grid.Column="4" Background="SaddleBrown" />
+        <Button Grid.Row="0" Grid.Column="5" Background="SandyBrown" />
+        <Button Grid.Row="0" Grid.Column="6" Background="SaddleBrown" />
+        <Button Grid.Row="0" Grid.Column="7" Background="SandyBrown" />
+        <Button Grid.Row="1" Grid.Column="7" Background="SaddleBrown" />
+        <Button Grid.Row="1" Grid.Column="6" Background="SandyBrown" />
+        <Button Grid.Row="1" Grid.Column="5" Background="SaddleBrown" />
+        <Button Grid.Row="1" Grid.Column="4" Background="SandyBrown" />
+        <Button Grid.Row="1" Grid.Column="3" Background="SaddleBrown" />
+        <Button Grid.Row="1" Grid.Column="2" Background="SandyBrown" />
+        <Button Grid.Row="1" Grid.Column="1" Background="SaddleBrown" />
+        <Button Grid.Row="1" Grid.Column="0" Background="SandyBrown" />
+        <Button Grid.Row="2" Grid.Column="0" Background="SaddleBrown" />
+        <Button Grid.Row="2" Grid.Column="1" Background="SandyBrown" />
+        <Button Grid.Row="2" Grid.Column="2" Background="SaddleBrown" />
+        <Button Grid.Row="2" Grid.Column="3" Background="SandyBrown" />
+        <Button Grid.Row="2" Grid.Column="4" Background="SaddleBrown" />
+        <Button Grid.Row="2" Grid.Column="5" Background="SandyBrown" />
+        <Button Grid.Row="2" Grid.Column="6" Background="SaddleBrown" />
+        <Button Grid.Row="2" Grid.Column="7" Background="SandyBrown" />
+        <Button Grid.Row="3" Grid.Column="7" Background="SaddleBrown" />
+        <Button Grid.Row="3" Grid.Column="6" Background="SandyBrown" />
+        <Button Grid.Row="3" Grid.Column="5" Background="SaddleBrown" />
+        <Button Grid.Row="3" Grid.Column="4" Background="SandyBrown" />
+        <Button Grid.Row="3" Grid.Column="3" Background="SaddleBrown" />
+        <Button Grid.Row="3" Grid.Column="2" Background="SandyBrown" />
+        <Button Grid.Row="3" Grid.Column="1" Background="SaddleBrown" />
+        <Button Grid.Row="3" Grid.Column="0" Background="SandyBrown" />
+        <Button Grid.Row="4" Grid.Column="0" Background="SaddleBrown" />
+        <Button Grid.Row="4" Grid.Column="1" Background="SandyBrown" />
+        <Button Grid.Row="4" Grid.Column="2" Background="SaddleBrown" />
+        <Button Grid.Row="4" Grid.Column="3" Background="SandyBrown" />
+        <Button Grid.Row="4" Grid.Column="4" Background="SaddleBrown" />
+        <Button Grid.Row="4" Grid.Column="5" Background="SandyBrown" />
+        <Button Grid.Row="4" Grid.Column="6" Background="SaddleBrown" />
+        <Button Grid.Row="4" Grid.Column="7" Background="SandyBrown" />
+        <Button Grid.Row="5" Grid.Column="7" Background="SaddleBrown" />
+        <Button Grid.Row="5" Grid.Column="6" Background="SandyBrown" />
+        <Button Grid.Row="5" Grid.Column="5" Background="SaddleBrown" />
+        <Button Grid.Row="5" Grid.Column="4" Background="SandyBrown" />
+        <Button Grid.Row="5" Grid.Column="3" Background="SaddleBrown" />
+        <Button Grid.Row="5" Grid.Column="2" Background="SandyBrown" />
+        <Button Grid.Row="5" Grid.Column="1" Background="SaddleBrown" />
+        <Button Grid.Row="5" Grid.Column="0" Background="SandyBrown" />
+        <Button Grid.Row="6" Grid.Column="0" Background="SaddleBrown" />
+        <Button Grid.Row="6" Grid.Column="1" Background="SandyBrown" />
+        <Button Grid.Row="6" Grid.Column="2" Background="SaddleBrown" />
+        <Button Grid.Row="6" Grid.Column="3" Background="SandyBrown" />
+        <Button Grid.Row="6" Grid.Column="4" Background="SaddleBrown" />
+        <Button Grid.Row="6" Grid.Column="5" Background="SandyBrown" />
+        <Button Grid.Row="6" Grid.Column="6" Background="SaddleBrown" />
+        <Button Grid.Row="6" Grid.Column="7" Background="SandyBrown" />
+        <Button Grid.Row="7" Grid.Column="7" Background="SaddleBrown" />
+        <Button Grid.Row="7" Grid.Column="6" Background="SandyBrown" />
+        <Button Grid.Row="7" Grid.Column="5" Background="SaddleBrown" />
+        <Button Grid.Row="7" Grid.Column="4" Background="SandyBrown" />
+        <Button Grid.Row="7" Grid.Column="3" Background="SaddleBrown" />
+        <Button Grid.Row="7" Grid.Column="2" Background="SandyBrown" />
+        <Button Grid.Row="7" Grid.Column="1" Background="SaddleBrown" />
+        <Button Grid.Row="7" Grid.Column="0" Background="SandyBrown" />
     </Grid>
 </Window>

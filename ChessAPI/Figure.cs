@@ -2,6 +2,7 @@
 {
     public enum Figure
     {
+        Grunt,
         Tower,
         Knight,
         Rogue,
