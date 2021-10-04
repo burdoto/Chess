@@ -21,7 +21,7 @@ namespace ChessAPI
         private ChessGame _game;
         public PlayerFigure? PlayerFigure { get; }
         public Vector2 Position { get; internal set; }
-        public List<Vector2> LegalMoves => _game.LegalMoves;
+        public List<Vector2> LegalMoves => _game.LegalMovesRel;
         private bool _alive = true;
 
         public bool CanBeat(PlayerFigurePosition target) => PlayerFigure != null && PlayerFigure.Player != target.PlayerFigure?.Player && LegalMoves.Contains(target.Position);
@@ -50,8 +50,9 @@ namespace ChessAPI
             switch (Figure)
             {
                 case ChessAPI.Figure.Grunt:
-                    LegalMoves.Add(Position - Vector2.UnitX);
-                    LegalMoves.Add(Position - Vector2.UnitX * 2);
+                    LegalMoves.Add(new Vector2(1, 0));
+                    LegalMoves.Add(new Vector2(2, 0));
+                    _game.Repetition = LegalMoveRepetition.Horizontal;
                     break;
                 case ChessAPI.Figure.Tower:
                     break;

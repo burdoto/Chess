@@ -6,6 +6,14 @@ using System.Numerics;
 
 namespace ChessAPI
 {
+    public enum LegalMoveRepetition
+    {
+        None,
+        Horizontal,
+        Quadlateral,
+        Radial
+    }
+
     public class ChessGame
     {
         public event Action BoardUpdated;
@@ -50,20 +58,36 @@ namespace ChessAPI
 
         public Vector2? ActivePosition { get; internal set; }
 
-        public List<Vector2> LegalMoves { get; } = new List<Vector2>();
+        public List<Vector2> LegalMovesRel { get; } = new List<Vector2>();
+        public IEnumerable<Vector2> LegalMoves
+        {
+            get
+            {
+                return Repetition switch
+                {
+                    LegalMoveRepetition.None => LegalMovesRel.Select(it => it + (ActivePosition ?? Vector2.Zero)),
+                    LegalMoveRepetition.Horizontal => LegalMovesRel.Select(it => new Vector2(ActivePlayer == Player.PlayerTwo ? it.X : -it.X, it.Y) + (ActivePosition ?? Vector2.Zero)),
+                    LegalMoveRepetition.Quadlateral => LegalMovesRel,
+                    LegalMoveRepetition.Radial => LegalMovesRel,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+        }
+
+        public LegalMoveRepetition Repetition = LegalMoveRepetition.None;
 
         public void UseField([Range(0, 7)] int x, [Range(0, 7)] int y)
         {
             var sel = new Vector2(x, y);
             if (ActivePosition == null && Board[x, y]?.Player == ActivePlayer) // select
-                this[(Vector2)(ActivePosition = new Vector2(x, y))].CalculateLegalMoves();
+                this[(Vector2)(ActivePosition = new Vector2(x, y))]!.CalculateLegalMoves();
             else if (ActivePosition != null && LegalMoves.Contains(sel)) // apply move
 #pragma warning disable 8629
-                if (this[(Vector2)ActivePosition].MoveTo(x, y))
+                if (this[(Vector2)ActivePosition]!.MoveTo(x, y))
                 {
 #pragma warning restore 8629
                     ActivePlayer = ActivePlayer.Opposing();
-                    LegalMoves.Clear();
+                    LegalMovesRel.Clear();
                     ActivePosition = null;
                 }
 
