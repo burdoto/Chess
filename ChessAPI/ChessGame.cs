@@ -21,8 +21,6 @@ namespace ChessAPI
             {new PlayerFigure(Player.PlayerOne, Figure.Tower),new PlayerFigure(Player.PlayerOne, Figure.Knight),new PlayerFigure(Player.PlayerOne, Figure.Rogue),new PlayerFigure(Player.PlayerOne, Figure.Queen),new PlayerFigure(Player.PlayerOne, Figure.King),new PlayerFigure(Player.PlayerOne, Figure.Rogue),new PlayerFigure(Player.PlayerOne, Figure.Knight),new PlayerFigure(Player.PlayerOne, Figure.Tower)}
         };
 
-        private Vector2? _activePosition;
-
         public void Start() => BoardUpdated();
 
         public PlayerFigurePosition this[Vector2 pos]
@@ -46,17 +44,21 @@ namespace ChessAPI
 
         public Player ActivePlayer { get; private set; } = Player.PlayerOne;
 
-        public Vector2? ActivePosition
+        public Vector2? ActivePosition { get; internal set; }
+
+        public IEnumerable<Vector2>? LegalMoves
         {
-            get => _activePosition;
-            internal set
+            get
             {
-                _activePosition = value;
-                BoardUpdated();
+                if (ActivePosition.HasValue)
+                {
+                    var position = this[ActivePosition.Value];
+                    return position.LegalMoves;
+                }
+
+                return Array.Empty<Vector2>();
             }
         }
-
-        public IEnumerable<Vector2>? LegalMoves => ActivePosition != null ? (IEnumerable<Vector2>?) this[ActivePosition ?? -Vector2.One].LegalMoves : Array.Empty<Vector2>();
 
         public void UseField([Range(0, 7)] int x, [Range(0, 7)] int y)
         {

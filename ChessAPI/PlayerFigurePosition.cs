@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 
@@ -45,7 +46,27 @@ namespace ChessAPI
 
         public void CalculateLegalMoves()
         {
-            // todo
+            switch (Figure)
+            {
+                case ChessAPI.Figure.Grunt:
+                    LegalMoves.Add(Position - Vector2.UnitX);
+                    LegalMoves.Add(Position - Vector2.UnitX * 2);
+                    break;
+                case ChessAPI.Figure.Tower:
+                    break;
+                case ChessAPI.Figure.Knight:
+                    break;
+                case ChessAPI.Figure.Rogue:
+                    break;
+                case ChessAPI.Figure.Queen:
+                    break;
+                case ChessAPI.Figure.King:
+                    break;
+                case null:
+                    throw new ArgumentOutOfRangeException();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

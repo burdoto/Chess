@@ -60,7 +60,7 @@ namespace ChessWPF
         private void ButtonClickHandler(object sender, RoutedEventArgs e)
         {
             if (sender is UIElement uie)
-               Game.UseField(Grid.GetColumn(uie), Grid.GetRow(uie));
+               Game.UseField(Grid.GetRow(uie), Grid.GetColumn(uie));
         }
     }
 }
