@@ -51,6 +51,7 @@ namespace ChessAPI
             {
                 case ChessAPI.Figure.Grunt:
                     LegalMoves.Add(new Vector2(1, 0));
+                    // first move can be 2 tiles
                     if ((int) Position.X == (Player == ChessAPI.Player.PlayerOne ? 6 : 1))
                         LegalMoves.Add(new Vector2(2, 0));
                     _game.Repetition = LegalMoveRepetition.None;
