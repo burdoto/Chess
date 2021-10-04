@@ -21,7 +21,7 @@ namespace ChessAPI
         private ChessGame _game;
         public PlayerFigure? PlayerFigure { get; }
         public Vector2 Position { get; internal set; }
-        public readonly List<Vector2> LegalMoves = new List<Vector2>();
+        public List<Vector2> LegalMoves => _game.LegalMoves;
         private bool _alive = true;
 
         public bool CanBeat(PlayerFigurePosition target) => PlayerFigure != null && PlayerFigure.Player != target.PlayerFigure?.Player && LegalMoves.Contains(target.Position);
@@ -29,11 +29,11 @@ namespace ChessAPI
         public bool MoveTo([Range(0, 7)] int x, [Range(0, 7)] int y)
         {
             var targetPos = _game[x, y];
-            if (targetPos.PlayerFigure != null && !CanBeat(targetPos))
+            if (targetPos!.PlayerFigure != null && !CanBeat(targetPos))
                 return false;
             _game[targetPos.Position] = this;
-            return true;
-        }
+        return true;
+    }
 
         bool IPlayerFigure.Alive
         {
@@ -46,6 +46,7 @@ namespace ChessAPI
 
         public void CalculateLegalMoves()
         {
+            LegalMoves.Clear();
             switch (Figure)
             {
                 case ChessAPI.Figure.Grunt:

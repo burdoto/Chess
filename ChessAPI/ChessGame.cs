@@ -23,13 +23,13 @@ namespace ChessAPI
 
         public void Start() => BoardUpdated();
 
-        public PlayerFigurePosition this[Vector2 pos]
+        public PlayerFigurePosition? this[Vector2 pos]
         {
             get => this[(int)pos.X, (int)pos.Y];
             set => this[(int)pos.X, (int)pos.Y] = value;
         }
 
-        public PlayerFigurePosition this[[Range(0, 7)] int x, [Range(0, 7)] int y]
+        public PlayerFigurePosition? this[[Range(0, 7)] int x, [Range(0, 7)] int y]
         {
             get => new PlayerFigurePosition(this, Board[x, y], x, y);
             set
@@ -37,8 +37,12 @@ namespace ChessAPI
                 PlayerFigure? swap = Board[x, y];
                 if (swap is IPlayerFigure ipf)
                     ipf.Alive = false;
-                Board[x, y] = value.PlayerFigure;
-                value.Position = new Vector2(x, y);
+                Board[x, y] = value?.PlayerFigure;
+                if (value != null)
+                {
+                    this[value.Position] = null;
+                    value.Position = new Vector2(x, y);
+                }
             }
         }
 
@@ -46,29 +50,23 @@ namespace ChessAPI
 
         public Vector2? ActivePosition { get; internal set; }
 
-        public IEnumerable<Vector2>? LegalMoves
-        {
-            get
-            {
-                if (ActivePosition.HasValue)
-                {
-                    var position = this[ActivePosition.Value];
-                    return position.LegalMoves;
-                }
-
-                return Array.Empty<Vector2>();
-            }
-        }
+        public List<Vector2> LegalMoves { get; } = new List<Vector2>();
 
         public void UseField([Range(0, 7)] int x, [Range(0, 7)] int y)
         {
+            var sel = new Vector2(x, y);
             if (ActivePosition == null && Board[x, y]?.Player == ActivePlayer) // select
                 this[(Vector2)(ActivePosition = new Vector2(x, y))].CalculateLegalMoves();
-            else if (ActivePosition != null && (LegalMoves?.Contains(ActivePosition ?? -Vector2.One) ?? false)) // apply move
+            else if (ActivePosition != null && LegalMoves.Contains(sel)) // apply move
 #pragma warning disable 8629
                 if (this[(Vector2)ActivePosition].MoveTo(x, y))
+                {
 #pragma warning restore 8629
                     ActivePlayer = ActivePlayer.Opposing();
+                    LegalMoves.Clear();
+                    ActivePosition = null;
+                }
+
             BoardUpdated();
         }
     }
