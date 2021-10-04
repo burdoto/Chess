@@ -44,16 +44,20 @@ namespace ChessWPF
                 var vec = new Vector2(x, y);
                 var fig = Game.Board[x, y];
                 var box = this[x, y];
+                var legal = Game.LegalMoves.Contains(vec);
 
-                if (box != null)
+                if (box != null && (fig != null || legal))
                 {
-                    box.Content = fig == null ? "" : fig.Player + "\n" + fig.Figure;
-
+                    box.Content = "";
+                    if (fig?.Player == Game.ActivePlayer)
+                        box.Content += fig.Player + "\n";
+                    box.Content += fig?.Figure.ToString() ?? "";
                     if (Game.ActivePosition == vec)
                         box.Content += '\n' + "SELECTED";
-                    if (Game.LegalMoves.Contains(vec))
+                    if (legal)
                         box.Content += '\n' + "LEGAL";
                 }
+                else if (box != null) box.Content = "";
             }
         }
 

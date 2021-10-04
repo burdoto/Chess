@@ -78,6 +78,7 @@ namespace ChessAPI
                     break;
                 case ChessAPI.Figure.King:
                     LegalMoves.Add(new Vector2(1, 0));
+                    LegalMoves.Add(new Vector2(1, 1));
                     _game.Repetition = LegalMoveRepetition.Radial;
                     break;
                 case null:
