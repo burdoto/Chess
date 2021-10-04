@@ -9,7 +9,6 @@ namespace ChessAPI
     public enum LegalMoveRepetition
     {
         None,
-        Horizontal,
         Quadlateral,
         Radial
     }
@@ -59,22 +58,55 @@ namespace ChessAPI
         public Vector2? ActivePosition { get; internal set; }
 
         public List<Vector2> LegalMovesRel { get; } = new List<Vector2>();
+
         public IEnumerable<Vector2> LegalMoves
         {
             get
             {
-                return Repetition switch
-                {
-                    LegalMoveRepetition.None => LegalMovesRel.Select(it => it + (ActivePosition ?? Vector2.Zero)),
-                    LegalMoveRepetition.Horizontal => LegalMovesRel.Select(it => new Vector2(ActivePlayer == Player.PlayerTwo ? it.X : -it.X, it.Y) + (ActivePosition ?? Vector2.Zero)),
-                    LegalMoveRepetition.Quadlateral => LegalMovesRel,
-                    LegalMoveRepetition.Radial => LegalMovesRel,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
+                /*
+                 * Equal KScr Code example:
+                 *
+                 * public iterable<Vector2> LegalMoves << (LegalMovesRel
+                 *              >[PlayerMirror]>
+                 *              >[Repetition == LegalMoveRepetition.Quadlateral
+                 *                      ? MirrorQuadlateral
+                 *                      : Repetition == LegalMoveRepetition.Radial
+                 *                              ? MirrorRadial
+                 *                              : this]>
+                 *              >[CalcRelative]>);
+                 */
+
+                var yield = LegalMovesRel.Select(PlayerMirror);
+                if (Repetition == LegalMoveRepetition.Quadlateral)
+                    yield = yield.SelectMany(MirrorQuadlateral);
+                else if (Repetition == LegalMoveRepetition.Radial)
+                    yield = yield.SelectMany(MirrorRadial);
+                return yield.Select(CalcRelative);
             }
         }
 
+        private Vector2 CalcRelative(Vector2 arg) => arg + (ActivePosition ?? Vector2.Zero);
+
+        private Vector2 PlayerMirror(Vector2 arg) => ActivePlayer == Player.PlayerOne ? -arg : arg;
+
+        private static readonly Vector2 ab = new Vector2(1, -1);
+
+        private IEnumerable<Vector2> MirrorQuadlateral(Vector2 arg) => new[] { arg * Vector2.One, arg * ab, arg * -ab, arg * -Vector2.One };
+
+
+        private IEnumerable<Vector2> MirrorRadial(Vector2 arg) => new[]
+        {
+            arg * Vector2.One, arg * ab, arg * -ab, arg * -Vector2.One,
+            arg = new Vector2(arg.Y, arg.X) * Vector2.One, arg * ab, arg * -ab, arg * -Vector2.One
+        };
+
         public LegalMoveRepetition Repetition = LegalMoveRepetition.None;
+
+        public void ResetSelection()
+        {
+            ActivePosition = null;
+            BoardUpdated();
+        }
 
         public void UseField([Range(0, 7)] int x, [Range(0, 7)] int y)
         {
@@ -82,10 +114,8 @@ namespace ChessAPI
             if (ActivePosition == null && Board[x, y]?.Player == ActivePlayer) // select
                 this[(Vector2)(ActivePosition = new Vector2(x, y))]!.CalculateLegalMoves();
             else if (ActivePosition != null && LegalMoves.Contains(sel)) // apply move
-#pragma warning disable 8629
                 if (this[(Vector2)ActivePosition]!.MoveTo(x, y))
                 {
-#pragma warning restore 8629
                     ActivePlayer = ActivePlayer.Opposing();
                     LegalMovesRel.Clear();
                     ActivePosition = null;

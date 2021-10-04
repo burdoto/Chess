@@ -51,22 +51,40 @@ namespace ChessAPI
             {
                 case ChessAPI.Figure.Grunt:
                     LegalMoves.Add(new Vector2(1, 0));
-                    LegalMoves.Add(new Vector2(2, 0));
-                    _game.Repetition = LegalMoveRepetition.Horizontal;
+                    if ((int) Position.X == (Player == ChessAPI.Player.PlayerOne ? 6 : 1))
+                        LegalMoves.Add(new Vector2(2, 0));
+                    _game.Repetition = LegalMoveRepetition.None;
                     break;
                 case ChessAPI.Figure.Tower:
+                    for (int x = 1; x < 8; x++)
+                        LegalMoves.Add(new Vector2(x, 0));
+                    _game.Repetition = LegalMoveRepetition.Radial;
                     break;
                 case ChessAPI.Figure.Knight:
+                    LegalMoves.Add(new Vector2(1,2));
+                    _game.Repetition = LegalMoveRepetition.Radial;
                     break;
                 case ChessAPI.Figure.Rogue:
+                    for (int i = 1; i < 8; i++)
+                        LegalMoves.Add(new Vector2(i, i));
+                    _game.Repetition = LegalMoveRepetition.Quadlateral;
                     break;
                 case ChessAPI.Figure.Queen:
+                    for (int x = 1; x < 8; x++)
+                        LegalMoves.Add(new Vector2(x, 0));
+                    for (int i = 1; i < 8; i++)
+                        LegalMoves.Add(new Vector2(i, i));
+                    _game.Repetition = LegalMoveRepetition.Radial;
                     break;
                 case ChessAPI.Figure.King:
+                    LegalMoves.Add(new Vector2(1, 0));
+                    _game.Repetition = LegalMoveRepetition.Radial;
                     break;
                 case null:
+                    _game.Repetition = LegalMoveRepetition.None;
                     throw new ArgumentOutOfRangeException();
                 default:
+                    _game.Repetition = LegalMoveRepetition.None;
                     throw new ArgumentOutOfRangeException();
             }
         }
