@@ -9,7 +9,7 @@ namespace ChessAPI
     public enum LegalMoveMirroring
     {
         None,
-        Quadlateral,
+        Diagonal,
         Radial
     }
 
@@ -71,8 +71,8 @@ namespace ChessAPI
                  *
                  * public iterable<Vector2> LegalMoves << (LegalMovesRel
                  *              >[PlayerMirror]>
-                 *              >[Mirroring == LegalMoveMirroring.Quadlateral
-                 *                      ? MirrorQuadlateral
+                 *              >[Mirroring == LegalMoveMirroring.Diagonal
+                 *                      ? MirrorDiagonal
                  *                      : Mirroring == LegalMoveMirroring.Radial
                  *                              ? MirrorRadial
                  *                              : this]>
@@ -80,8 +80,8 @@ namespace ChessAPI
                  */
 
                 var yield = LegalMovesRel.Select(PlayerMirror);
-                if (Mirroring == LegalMoveMirroring.Quadlateral)
-                    yield = yield.SelectMany(MirrorQuadlateral);
+                if (Mirroring == LegalMoveMirroring.Diagonal)
+                    yield = yield.SelectMany(MirrorDiagonal);
                 else if (Mirroring == LegalMoveMirroring.Radial)
                     yield = yield.SelectMany(MirrorRadial);
                 if (Repetition)
@@ -122,7 +122,7 @@ namespace ChessAPI
 
         private static readonly Vector2 ab = new Vector2(1, -1);
 
-        private IEnumerable<Vector2> MirrorQuadlateral(Vector2 rel) => new[] { rel * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One };
+        private IEnumerable<Vector2> MirrorDiagonal(Vector2 rel) => new[] { rel * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One };
 
 
         private IEnumerable<Vector2> MirrorRadial(Vector2 rel) => new[]

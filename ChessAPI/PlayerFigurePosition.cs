@@ -70,7 +70,7 @@ namespace ChessAPI
                     break;
                 case ChessAPI.Figure.Rogue:
                     LegalMoves.Add(new Vector2(1, 1));
-                    _game.Mirroring = LegalMoveMirroring.Quadlateral;
+                    _game.Mirroring = LegalMoveMirroring.Diagonal;
                     _game.Repetition = true;
                     break;
                 case ChessAPI.Figure.Queen:
