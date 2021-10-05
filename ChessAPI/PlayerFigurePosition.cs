@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Numerics;
 
 namespace ChessAPI
@@ -24,7 +25,7 @@ namespace ChessAPI
         public List<Vector2> LegalMoves => _game.LegalMovesRel;
         private bool _alive = true;
 
-        public bool CanBeat(PlayerFigurePosition target) => PlayerFigure != null && PlayerFigure.Player != target.PlayerFigure?.Player && LegalMoves.Contains(target.Position);
+        public bool CanBeat(PlayerFigurePosition? target) => PlayerFigure != null && PlayerFigure.Player != target?.PlayerFigure?.Player;
 
         public bool MoveTo([Range(0, 7)] int x, [Range(0, 7)] int y)
         {

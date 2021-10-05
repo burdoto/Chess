@@ -57,6 +57,8 @@ namespace ChessAPI
 
         public Vector2? ActivePosition { get; internal set; }
 
+        public PlayerFigurePosition? ActiveFigure => !ActivePosition.HasValue ? null : this[ActivePosition.Value]!;
+
         public List<Vector2> LegalMovesRel { get; } = new List<Vector2>();
 
         public IEnumerable<Vector2> LegalMoves
@@ -81,8 +83,16 @@ namespace ChessAPI
                     yield = yield.SelectMany(MirrorQuadlateral);
                 else if (Repetition == LegalMoveRepetition.Radial)
                     yield = yield.SelectMany(MirrorRadial);
-                return yield.Select(CalcRelative);
+                return yield.Select(CalcRelative)
+                    .Where(CheckLegalMoveValid);
             }
+        }
+
+        private bool CheckLegalMoveValid(Vector2 arg)
+        {
+            var it = ActiveFigure;
+            var target = this[arg];
+            return it?.CanBeat(target) ?? false;
         }
 
         private Vector2 CalcRelative(Vector2 arg) => arg + (ActivePosition ?? Vector2.Zero);
