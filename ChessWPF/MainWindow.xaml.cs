@@ -59,12 +59,20 @@ namespace ChessWPF
                 }
                 else if (box != null) box.Content = "";
             }
+
+            DisplayPlayer.Text = "This player's turn:" + Game.ActivePlayer;
+            DisplaySelected.Text = "Selected Position: " + Game.ActivePosition;
         }
 
         private void ButtonClickHandler(object sender, RoutedEventArgs e)
         {
             if (sender is UIElement uie)
                Game.UseField(Grid.GetRow(uie), Grid.GetColumn(uie));
+        }
+
+        private void ResetSelection(object sender, RoutedEventArgs e)
+        {
+            Game.ResetSelection();
         }
     }
 }
