@@ -95,15 +95,17 @@ namespace ChessAPI
         {
             var yield = new List<Vector2>();
             var off = rel;
-            Vector2 abs;
-            PlayerFigurePosition? pos;
-            do
+            Vector2 abs = CalcRelative(off);
+            PlayerFigurePosition? pos = this[abs];
+            var opponent = ActivePlayer.Opposing();
+            while (pos != null && (pos.Player == null || pos.Player == opponent))
             {
                 yield.Add(off);
+                if (pos.Player == opponent)
+                    break;
                 abs = CalcRelative(off += rel);
                 pos = this[abs];
             }
-            while (pos != null && pos.PlayerFigure?.Player == null);
             return yield;
         }
 
