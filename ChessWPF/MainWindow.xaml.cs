@@ -31,7 +31,13 @@ namespace ChessWPF
             InitializeComponent();
 
             Game.BoardUpdated += UpdateUI;
+            Game.GameFinished += ResolveGame;
             Game.Start();
+        }
+
+        private void ResolveGame(Player winner)
+        {
+            Game.ResetGame();
         }
 
         public Button? this[[Range(0, 7)] int x, [Range(0, 7)] int y] => Board.Children.Cast<Button>()
