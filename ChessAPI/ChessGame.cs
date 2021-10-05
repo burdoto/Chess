@@ -123,10 +123,10 @@ namespace ChessAPI
 
         private static readonly Vector2 ab = new Vector2(1, -1);
 
-        private IEnumerable<Vector2> MirrorDiagonal(Vector2 rel) => new[] { rel * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One };
+        private Vector2[] MirrorDiagonal(Vector2 rel) => new[] { rel * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One };
 
 
-        private IEnumerable<Vector2> MirrorRadial(Vector2 rel) => new[]
+        private Vector2[] MirrorRadial(Vector2 rel) => new[]
         {
             rel * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One,
             rel = new Vector2(rel.Y, rel.X) * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One
