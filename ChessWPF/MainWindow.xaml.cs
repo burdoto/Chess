@@ -60,7 +60,7 @@ namespace ChessWPF
                 else if (box != null) box.Content = "";
             }
 
-            DisplayPlayer.Text = "This player's turn:" + Game.ActivePlayer;
+            DisplayPlayer.Text = "Active Player: " + Game.ActivePlayer;
             DisplaySelected.Text = "Selected Position: " + Game.ActivePosition;
         }
 
