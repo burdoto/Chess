@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace ChessAPI
 {
-    public enum LegalMoveRepetition
+    public enum LegalMoveMirroring
     {
         None,
         Quadlateral,
@@ -70,47 +70,66 @@ namespace ChessAPI
                  *
                  * public iterable<Vector2> LegalMoves << (LegalMovesRel
                  *              >[PlayerMirror]>
-                 *              >[Repetition == LegalMoveRepetition.Quadlateral
+                 *              >[Mirroring == LegalMoveMirroring.Quadlateral
                  *                      ? MirrorQuadlateral
-                 *                      : Repetition == LegalMoveRepetition.Radial
+                 *                      : Mirroring == LegalMoveMirroring.Radial
                  *                              ? MirrorRadial
                  *                              : this]>
                  *              >[CalcRelative]>);
                  */
 
                 var yield = LegalMovesRel.Select(PlayerMirror);
-                if (Repetition == LegalMoveRepetition.Quadlateral)
+                if (Mirroring == LegalMoveMirroring.Quadlateral)
                     yield = yield.SelectMany(MirrorQuadlateral);
-                else if (Repetition == LegalMoveRepetition.Radial)
+                else if (Mirroring == LegalMoveMirroring.Radial)
                     yield = yield.SelectMany(MirrorRadial);
+                if (Repetition)
+                    yield = yield.SelectMany(ApplyRepetition);
                 return yield.Select(CalcRelative)
                     .Where(CheckLegalMoveValid);
             }
         }
 
-        private bool CheckLegalMoveValid(Vector2 arg)
+        private IEnumerable<Vector2> ApplyRepetition(Vector2 rel)
+        {
+            var yield = new List<Vector2>();
+            var off = rel;
+            Vector2 abs;
+            PlayerFigurePosition? pos;
+            do
+            {
+                yield.Add(off);
+                abs = CalcRelative(off += rel);
+                pos = this[abs];
+            }
+            while (pos != null && pos.PlayerFigure?.Player == null);
+            return yield;
+        }
+
+        private bool CheckLegalMoveValid(Vector2 abs)
         {
             var it = ActiveFigure;
-            var target = this[arg];
+            var target = this[abs];
             return it?.CanBeat(target) ?? false;
         }
 
-        private Vector2 CalcRelative(Vector2 arg) => arg + (ActivePosition ?? Vector2.Zero);
+        private Vector2 CalcRelative(Vector2 rel) => rel + (ActivePosition ?? Vector2.Zero);
 
-        private Vector2 PlayerMirror(Vector2 arg) => ActivePlayer == Player.PlayerOne ? -arg : arg;
+        private Vector2 PlayerMirror(Vector2 rel) => ActivePlayer == Player.PlayerOne ? -rel : rel;
 
         private static readonly Vector2 ab = new Vector2(1, -1);
 
-        private IEnumerable<Vector2> MirrorQuadlateral(Vector2 arg) => new[] { arg * Vector2.One, arg * ab, arg * -ab, arg * -Vector2.One };
+        private IEnumerable<Vector2> MirrorQuadlateral(Vector2 rel) => new[] { rel * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One };
 
 
-        private IEnumerable<Vector2> MirrorRadial(Vector2 arg) => new[]
+        private IEnumerable<Vector2> MirrorRadial(Vector2 rel) => new[]
         {
-            arg * Vector2.One, arg * ab, arg * -ab, arg * -Vector2.One,
-            arg = new Vector2(arg.Y, arg.X) * Vector2.One, arg * ab, arg * -ab, arg * -Vector2.One
+            rel * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One,
+            rel = new Vector2(rel.Y, rel.X) * Vector2.One, rel * ab, rel * -ab, rel * -Vector2.One
         };
 
-        public LegalMoveRepetition Repetition = LegalMoveRepetition.None;
+        public LegalMoveMirroring Mirroring = LegalMoveMirroring.None;
+        public bool Repetition = false;
 
         public void ResetSelection()
         {

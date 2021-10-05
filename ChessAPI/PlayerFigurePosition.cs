@@ -55,39 +55,41 @@ namespace ChessAPI
                     // first move can be 2 tiles
                     if ((int) Position.X == (Player == ChessAPI.Player.PlayerOne ? 6 : 1))
                         LegalMoves.Add(new Vector2(2, 0));
-                    _game.Repetition = LegalMoveRepetition.None;
+                    _game.Mirroring = LegalMoveMirroring.None;
+                    _game.Repetition = false;
                     break;
                 case ChessAPI.Figure.Tower:
-                    for (int x = 1; x < 8; x++)
-                        LegalMoves.Add(new Vector2(x, 0));
-                    _game.Repetition = LegalMoveRepetition.Radial;
+                    LegalMoves.Add(new Vector2(1, 0));
+                    _game.Mirroring = LegalMoveMirroring.Radial;
+                    _game.Repetition = true;
                     break;
                 case ChessAPI.Figure.Knight:
                     LegalMoves.Add(new Vector2(1,2));
-                    _game.Repetition = LegalMoveRepetition.Radial;
+                    _game.Mirroring = LegalMoveMirroring.Radial;
+                    _game.Repetition = false;
                     break;
                 case ChessAPI.Figure.Rogue:
-                    for (int i = 1; i < 8; i++)
-                        LegalMoves.Add(new Vector2(i, i));
-                    _game.Repetition = LegalMoveRepetition.Quadlateral;
+                    LegalMoves.Add(new Vector2(1, 1));
+                    _game.Mirroring = LegalMoveMirroring.Quadlateral;
+                    _game.Repetition = true;
                     break;
                 case ChessAPI.Figure.Queen:
-                    for (int x = 1; x < 8; x++)
-                        LegalMoves.Add(new Vector2(x, 0));
-                    for (int i = 1; i < 8; i++)
-                        LegalMoves.Add(new Vector2(i, i));
-                    _game.Repetition = LegalMoveRepetition.Radial;
+                    LegalMoves.Add(new Vector2(1, 0));
+                    LegalMoves.Add(new Vector2(1, 1));
+                    _game.Mirroring = LegalMoveMirroring.Radial;
+                    _game.Repetition = true;
                     break;
                 case ChessAPI.Figure.King:
                     LegalMoves.Add(new Vector2(1, 0));
                     LegalMoves.Add(new Vector2(1, 1));
-                    _game.Repetition = LegalMoveRepetition.Radial;
+                    _game.Mirroring = LegalMoveMirroring.Radial;
+                    _game.Repetition = false;
                     break;
                 case null:
-                    _game.Repetition = LegalMoveRepetition.None;
+                    _game.Mirroring = LegalMoveMirroring.None;
                     throw new ArgumentOutOfRangeException();
                 default:
-                    _game.Repetition = LegalMoveRepetition.None;
+                    _game.Mirroring = LegalMoveMirroring.None;
                     throw new ArgumentOutOfRangeException();
             }
         }
