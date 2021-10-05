@@ -192,12 +192,14 @@ namespace ChessAPI
             CheckWinConditions();
         }
 
-        public IEnumerable<PlayerFigurePosition?> All()
+        public IEnumerable<PlayerFigurePosition> All()
         {
-            var yield = new List<PlayerFigurePosition?>();
+            var yield = new List<PlayerFigurePosition>();
+            PlayerFigurePosition? acc;
             for (int x = 0; x < 8; x++)
             for (int y = 0; y < 8; y++)
-                yield.Add(this[x, y]);
+                if ((acc = this[x, y]) != null)
+                    yield.Add(acc);
             return yield;
         }
 
