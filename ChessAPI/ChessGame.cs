@@ -87,7 +87,8 @@ namespace ChessAPI
                 if (Repetition)
                     yield = yield.SelectMany(ApplyRepetition);
                 return yield.Select(CalcRelative)
-                    .Where(CheckLegalMoveValid);
+                    .Where(CheckLegalMoveValid)
+                    .Distinct();
             }
         }
 
