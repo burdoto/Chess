@@ -38,7 +38,7 @@ namespace ChessAPI
 
         public PlayerFigurePosition? this[[Range(0, 7)] int x, [Range(0, 7)] int y]
         {
-            get => new PlayerFigurePosition(this, Board[x, y], x, y);
+            get => x < 0 || y < 0 || x > 7 || y > 7 ? null : new PlayerFigurePosition(this, Board[x, y], x, y);
             set
             {
                 PlayerFigure? swap = Board[x, y];
