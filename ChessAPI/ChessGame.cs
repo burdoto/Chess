@@ -59,6 +59,7 @@ namespace ChessAPI
 
         public PlayerFigurePosition? ActiveFigure => !ActivePosition.HasValue ? null : this[ActivePosition.Value]!;
 
+        #region Legal Move Evaluation
         public List<Vector2> LegalMovesRel { get; } = new List<Vector2>();
 
         public IEnumerable<Vector2> LegalMoves
@@ -130,6 +131,7 @@ namespace ChessAPI
 
         public LegalMoveMirroring Mirroring = LegalMoveMirroring.None;
         public bool Repetition = false;
+        #endregion
 
         public void ResetSelection()
         {
