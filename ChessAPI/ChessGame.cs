@@ -146,7 +146,7 @@ namespace ChessAPI
         {
             var sel = new Vector2(x, y);
             if (ActivePosition == null && Board[x, y]?.Player == ActivePlayer) // select
-                this[(Vector2)(ActivePosition = new Vector2(x, y))]!.CalculateLegalMoves();
+                this[(Vector2)(ActivePosition = new Vector2(x, y))]!.SetRelLegalMoves();
             else if (ActivePosition != null && LegalMoves.Contains(sel)) // apply move
                 if (this[(Vector2)ActivePosition]!.MoveTo(x, y))
                 {

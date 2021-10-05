@@ -45,7 +45,7 @@ namespace ChessAPI
         public Player? Player => PlayerFigure?.Player;
         public Figure? Figure => PlayerFigure?.Figure;
 
-        public void CalculateLegalMoves()
+        public void SetRelLegalMoves()
         {
             LegalMoves.Clear();
             switch (Figure)
