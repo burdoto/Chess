@@ -35,12 +35,12 @@ namespace ChessWPF
                         {
                             var path = ChessGame.GetImagePath(basePath, plr, fig);
                             var bmp = new BitmapImage(new Uri(path.FullName));
-                            if (plr == Player.PlayerOne) // inverse bmp
-                                bmp = InvertBitmap(bmp);
+                            //if (plr == Player.PlayerOne) bmp = InvertBitmap(bmp); // inverse bmp
                             FigureImages[(int)plr, (int)fig] = bmp;
                         }
         }
 
+        #region Bitmap Inversion
         private static BitmapImage InvertBitmap(BitmapImage bmp)
         {
             var pic = BitmapImage2Bitmap(bmp);
@@ -103,6 +103,7 @@ namespace ChessWPF
 
             return bImg;
         }
+        #endregion
 
         public MainWindow()
         {
@@ -135,7 +136,7 @@ namespace ChessWPF
                 {
                     // todo Emplace actual images
                     //box.Content = FigureImages[(int)fig.Player, (int)fig.Figure];
-                    ///* box string content
+                    /* box string content
                     box.Content = "";
                     if (fig?.Player == Game.ActivePlayer)
                         box.Content += fig.Player + "\n";
@@ -144,7 +145,7 @@ namespace ChessWPF
                         box.Content += '\n' + "SELECTED";
                     if (legal)
                         box.Content += '\n' + "LEGAL";
-                     //   */
+                        */
                 }
                 else if (box != null) box.Content = "";
             }
