@@ -212,7 +212,8 @@ namespace ChessAPI
             if (!All().Any(it => it.Figure == Figure.King && it.Player == Player.PlayerTwo))
                 GameFinished(Player.PlayerOne);
         }
-        private static FileInfo GetImagePath(Figure it, FileInfo basePath, Player player) =>
-            new FileInfo(Path.Combine(basePath.FullName, $"p{(player == Player.PlayerOne ? '1' : '2')}-{it}"));
+
+        public static FileInfo GetImagePath(string basePath, Player plr, Figure fig) =>
+            new(Path.Combine(Path.Combine(basePath,"Assets/"), $"p{(plr == Player.PlayerOne ? '1' : '2')}-{fig}.bmp"));
     }
 }

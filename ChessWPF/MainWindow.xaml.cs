@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ChessAPI;
+using Color = System.Drawing.Color;
 
 namespace ChessWPF
 {
@@ -23,7 +20,89 @@ namespace ChessWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static readonly BitmapImage[,] FigureImages = new BitmapImage[
+            typeof(Player).GetEnumValues().Length,
+            typeof(Figure).GetEnumValues().Length];
         public ChessGame Game = new ChessGame();
+
+        static MainWindow()
+        { // load images
+            var basePath = Directory.GetCurrentDirectory();
+            foreach (var obj1 in typeof(Player).GetEnumValues())
+                if (obj1 is Player plr)
+                    foreach (var obj2 in typeof(Figure).GetEnumValues())
+                        if (obj2 is Figure fig)
+                        {
+                            var path = ChessGame.GetImagePath(basePath, plr, fig);
+                            var bmp = new BitmapImage(new Uri(path.FullName));
+                            if (plr == Player.PlayerOne) // inverse bmp
+                                bmp = InvertBitmap(bmp);
+                            FigureImages[(int)plr, (int)fig] = bmp;
+                        }
+        }
+
+        private static BitmapImage InvertBitmap(BitmapImage bmp)
+        {
+            var pic = BitmapImage2Bitmap(bmp);
+            for (int y = 0; (y <= (pic.Height - 1)); y++) {
+                for (int x = 0; (x <= (pic.Width - 1)); x++) {
+                    Color inv = pic.GetPixel(x, y);
+                    inv = Color.FromArgb(255, (255 - inv.R), (255 - inv.G), (255 - inv.B));
+                    pic.SetPixel(x, y, inv);
+                }
+            }
+            return Bitmap2BitmapImage(pic);
+        }
+        private static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        {
+            // BitmapImage bitmapImage = new BitmapImage(new Uri("../Images/test.png", UriKind.Relative));
+
+            using(MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                Bitmap bitmap = new Bitmap(outStream);
+
+                return new Bitmap(bitmap);
+            }
+        }
+        public static BitmapSource Convert(System.Drawing.Bitmap bitmap)
+        {
+            var bitmapData = bitmap.LockBits(
+                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+            var bitmapSource = BitmapSource.Create(
+                bitmapData.Width, bitmapData.Height,
+                bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                PixelFormats.Bgr24, null,
+                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+            bitmap.UnlockBits(bitmapData);
+
+            return bitmapSource;
+        }
+        private static BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
+        {
+            BitmapSource bitmapSource = Convert(bitmap);
+
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            MemoryStream memoryStream = new MemoryStream();
+            BitmapImage bImg = new BitmapImage();
+
+            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+            encoder.Save(memoryStream);
+
+            memoryStream.Position = 0;
+            bImg.BeginInit();
+            bImg.StreamSource = memoryStream;
+            bImg.EndInit();
+
+            memoryStream.Close();
+
+            return bImg;
+        }
 
         public MainWindow()
         {
@@ -54,6 +133,9 @@ namespace ChessWPF
 
                 if (box != null && (fig != null || legal))
                 {
+                    // todo Emplace actual images
+                    //box.Content = FigureImages[(int)fig.Player, (int)fig.Figure];
+                    ///* box string content
                     box.Content = "";
                     if (fig?.Player == Game.ActivePlayer)
                         box.Content += fig.Player + "\n";
@@ -62,6 +144,7 @@ namespace ChessWPF
                         box.Content += '\n' + "SELECTED";
                     if (legal)
                         box.Content += '\n' + "LEGAL";
+                     //   */
                 }
                 else if (box != null) box.Content = "";
             }
