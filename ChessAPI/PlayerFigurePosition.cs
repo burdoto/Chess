@@ -86,10 +86,8 @@ namespace ChessAPI
                     _game.Repetition = false;
                     break;
                 case null:
-                    _game.Mirroring = LegalMoveMirroring.None;
                     throw new ArgumentOutOfRangeException();
                 default:
-                    _game.Mirroring = LegalMoveMirroring.None;
                     throw new ArgumentOutOfRangeException();
             }
         }
