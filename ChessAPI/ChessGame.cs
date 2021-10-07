@@ -85,7 +85,7 @@ namespace ChessAPI
         public PlayerFigurePosition? ActiveFigure => !ActivePosition.HasValue ? null : this[ActivePosition.Value]!;
 
         #region Legal Move Evaluation
-        public List<Vector2> LegalMovesRel { get; } = new List<Vector2>();
+        public List<Vector2> LegalMovesRel { get; } = new();
 
         public IEnumerable<Vector2> LegalMoves
         {
