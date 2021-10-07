@@ -78,6 +78,8 @@ namespace ChessWPF
                     if (Game.ActivePosition?.X == x && Game.ActivePosition?.Y == y)
                         box.Background = Brushes.Blue;
                     else box.Background = (x + y) % 2 == 0 ? Brushes.SaddleBrown : Brushes.SandyBrown;
+                    if (legal)
+                        box.Background = Brushes.Green;
                     //box.Content = FigureImages[(int)fig.Player, (int)fig.Figure];
                     /* box string content
                     box.Content = "";
