@@ -21,40 +21,37 @@ namespace ChessAPI
         public event Action<Player> GameFinished;
         public PlayerFigure?[,] Board { get; private set; } = ResetBoard();
 
-        private static PlayerFigure?[,] ResetBoard()
+        private static PlayerFigure?[,] ResetBoard() => new[,] 
         {
-            return new[,]
-            {
-                { // p2 royal row
-                    new PlayerFigure(Player.PlayerTwo, Figure.Tower), new PlayerFigure(Player.PlayerTwo, Figure.Knight),
-                    new PlayerFigure(Player.PlayerTwo, Figure.Rogue), new PlayerFigure(Player.PlayerTwo, Figure.Queen),
-                    new PlayerFigure(Player.PlayerTwo, Figure.King), new PlayerFigure(Player.PlayerTwo, Figure.Rogue),
-                    new PlayerFigure(Player.PlayerTwo, Figure.Knight), new PlayerFigure(Player.PlayerTwo, Figure.Tower)
-                },
-                { // p2 peasant row
-                    new PlayerFigure(Player.PlayerTwo, Figure.Grunt), new PlayerFigure(Player.PlayerTwo, Figure.Grunt),
-                    new PlayerFigure(Player.PlayerTwo, Figure.Grunt), new PlayerFigure(Player.PlayerTwo, Figure.Grunt),
-                    new PlayerFigure(Player.PlayerTwo, Figure.Grunt), new PlayerFigure(Player.PlayerTwo, Figure.Grunt),
-                    new PlayerFigure(Player.PlayerTwo, Figure.Grunt), new PlayerFigure(Player.PlayerTwo, Figure.Grunt)
-                },
-                { null, null, null, null, null, null, null, null },
-                { null, null, null, null, null, null, null, null },
-                { null, null, null, null, null, null, null, null },
-                { null, null, null, null, null, null, null, null },
-                { // p1 soldier row
-                    new PlayerFigure(Player.PlayerOne, Figure.Grunt), new PlayerFigure(Player.PlayerOne, Figure.Grunt),
-                    new PlayerFigure(Player.PlayerOne, Figure.Grunt), new PlayerFigure(Player.PlayerOne, Figure.Grunt),
-                    new PlayerFigure(Player.PlayerOne, Figure.Grunt), new PlayerFigure(Player.PlayerOne, Figure.Grunt),
-                    new PlayerFigure(Player.PlayerOne, Figure.Grunt), new PlayerFigure(Player.PlayerOne, Figure.Grunt)
-                },
-                { // p1 imperial row
-                    new PlayerFigure(Player.PlayerOne, Figure.Tower), new PlayerFigure(Player.PlayerOne, Figure.Knight),
-                    new PlayerFigure(Player.PlayerOne, Figure.Rogue), new PlayerFigure(Player.PlayerOne, Figure.Queen),
-                    new PlayerFigure(Player.PlayerOne, Figure.King), new PlayerFigure(Player.PlayerOne, Figure.Rogue),
-                    new PlayerFigure(Player.PlayerOne, Figure.Knight), new PlayerFigure(Player.PlayerOne, Figure.Tower)
-                }
-            };
-        }
+            { // p2 royal row
+                new PlayerFigure(Player.PlayerTwo, Figure.Tower), new PlayerFigure(Player.PlayerTwo, Figure.Knight),
+                new PlayerFigure(Player.PlayerTwo, Figure.Rogue), new PlayerFigure(Player.PlayerTwo, Figure.Queen),
+                new PlayerFigure(Player.PlayerTwo, Figure.King), new PlayerFigure(Player.PlayerTwo, Figure.Rogue),
+                new PlayerFigure(Player.PlayerTwo, Figure.Knight), new PlayerFigure(Player.PlayerTwo, Figure.Tower)
+            },
+            { // p2 peasant row
+                new PlayerFigure(Player.PlayerTwo, Figure.Grunt), new PlayerFigure(Player.PlayerTwo, Figure.Grunt),
+                new PlayerFigure(Player.PlayerTwo, Figure.Grunt), new PlayerFigure(Player.PlayerTwo, Figure.Grunt),
+                new PlayerFigure(Player.PlayerTwo, Figure.Grunt), new PlayerFigure(Player.PlayerTwo, Figure.Grunt),
+                new PlayerFigure(Player.PlayerTwo, Figure.Grunt), new PlayerFigure(Player.PlayerTwo, Figure.Grunt)
+            },
+            { null, null, null, null, null, null, null, null },
+            { null, null, null, null, null, null, null, null },
+            { null, null, null, null, null, null, null, null },
+            { null, null, null, null, null, null, null, null },
+            { // p1 soldier row
+                new PlayerFigure(Player.PlayerOne, Figure.Grunt), new PlayerFigure(Player.PlayerOne, Figure.Grunt),
+                new PlayerFigure(Player.PlayerOne, Figure.Grunt), new PlayerFigure(Player.PlayerOne, Figure.Grunt),
+                new PlayerFigure(Player.PlayerOne, Figure.Grunt), new PlayerFigure(Player.PlayerOne, Figure.Grunt),
+                new PlayerFigure(Player.PlayerOne, Figure.Grunt), new PlayerFigure(Player.PlayerOne, Figure.Grunt)
+            },
+            { // p1 imperial row
+                new PlayerFigure(Player.PlayerOne, Figure.Tower), new PlayerFigure(Player.PlayerOne, Figure.Knight),
+                new PlayerFigure(Player.PlayerOne, Figure.Rogue), new PlayerFigure(Player.PlayerOne, Figure.Queen),
+                new PlayerFigure(Player.PlayerOne, Figure.King), new PlayerFigure(Player.PlayerOne, Figure.Rogue),
+                new PlayerFigure(Player.PlayerOne, Figure.Knight), new PlayerFigure(Player.PlayerOne, Figure.Tower)
+            }
+        };
 
         public void Start() => BoardUpdated();
 

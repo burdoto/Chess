@@ -23,7 +23,7 @@ namespace ChessWPF
         public static readonly BitmapImage[,] FigureImages = new BitmapImage[
             typeof(Player).GetEnumValues().Length,
             typeof(Figure).GetEnumValues().Length];
-        public ChessGame Game = new ChessGame();
+        public ChessGame Game = new();
 
         static MainWindow()
         { // load images
