@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Numerics;
 
 namespace ChessAPI
 {
     public class PlayerFigurePosition : IPlayerFigure
     {
-        public PlayerFigurePosition(ChessGame game, PlayerFigure? playerFigure, int x, int y) : this(game, playerFigure, new Vector2(x,y))
+        private readonly ChessGame _game;
+
+        public PlayerFigurePosition(ChessGame game, PlayerFigure? playerFigure, int x, int y) : this(game, playerFigure,
+            new Vector2(x, y))
         {
         }
 
@@ -19,13 +21,19 @@ namespace ChessAPI
             Position = position;
         }
 
-        private ChessGame _game;
         public PlayerFigure? PlayerFigure { get; }
         public Vector2 Position { get; internal set; }
         public List<Vector2> LegalMoves => _game.LegalMovesRel;
-        private bool _alive = true;
 
-        public bool CanBeat(PlayerFigurePosition? target) => PlayerFigure != null && PlayerFigure.Player != target?.PlayerFigure?.Player;
+        bool IPlayerFigure.Alive { get; set; } = true;
+
+        public Player? Player => PlayerFigure?.Player;
+        public Figure? Figure => PlayerFigure?.Figure;
+
+        public bool CanBeat(PlayerFigurePosition? target)
+        {
+            return PlayerFigure != null && PlayerFigure.Player != target?.PlayerFigure?.Player;
+        }
 
         public bool MoveTo([Range(0, 7)] int x, [Range(0, 7)] int y)
         {
@@ -33,17 +41,8 @@ namespace ChessAPI
             if (targetPos!.PlayerFigure != null && !CanBeat(targetPos))
                 return false;
             _game[targetPos.Position] = this;
-        return true;
-    }
-
-        bool IPlayerFigure.Alive
-        {
-            get => _alive;
-            set => _alive = value;
+            return true;
         }
-
-        public Player? Player => PlayerFigure?.Player;
-        public Figure? Figure => PlayerFigure?.Figure;
 
         public void SetRelLegalMoves()
         {
@@ -53,7 +52,7 @@ namespace ChessAPI
                 case ChessAPI.Figure.Grunt:
                     LegalMoves.Add(new Vector2(1, 0));
                     // first move can be 2 tiles
-                    if ((int) Position.X == (Player == ChessAPI.Player.PlayerOne ? 6 : 1))
+                    if ((int)Position.X == (Player == ChessAPI.Player.PlayerOne ? 6 : 1))
                         LegalMoves.Add(new Vector2(2, 0));
                     _game.Mirroring = LegalMoveMirroring.None;
                     _game.Repetition = false;
@@ -64,7 +63,7 @@ namespace ChessAPI
                     _game.Repetition = true;
                     break;
                 case ChessAPI.Figure.Knight:
-                    LegalMoves.Add(new Vector2(1,2));
+                    LegalMoves.Add(new Vector2(1, 2));
                     _game.Mirroring = LegalMoveMirroring.Radial;
                     _game.Repetition = false;
                     break;

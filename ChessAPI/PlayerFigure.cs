@@ -9,8 +9,6 @@
 
     public class PlayerFigure : IPlayerFigure
     {
-        private bool _alive = true;
-
         public PlayerFigure(Player player, Figure figure)
         {
             Player = player;
@@ -21,11 +19,7 @@
         {
         }
 
-        bool IPlayerFigure.Alive
-        {
-            get => _alive;
-            set => _alive = value;
-        }
+        bool IPlayerFigure.Alive { get; set; } = true;
 
         public Player? Player { get; }
         public Figure? Figure { get; }

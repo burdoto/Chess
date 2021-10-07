@@ -8,6 +8,9 @@
 
     public static class PlayerExtensions
     {
-        public static Player Opposing(this Player it) => it == Player.PlayerOne ? Player.PlayerTwo : Player.PlayerOne;
+        public static Player Opposing(this Player it)
+        {
+            return it == Player.PlayerOne ? Player.PlayerTwo : Player.PlayerOne;
+        }
     }
 }
