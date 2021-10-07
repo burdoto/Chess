@@ -47,6 +47,8 @@ namespace ChessAPI
 
         public Vector2? ActivePosition { get; internal set; }
 
+        public Vector2? KingInDanger = null;
+
         public PlayerFigurePosition? ActiveFigure => !ActivePosition.HasValue ? null : this[ActivePosition.Value]!;
         public event Action BoardUpdated;
         public event Action<Player> GameFinished;

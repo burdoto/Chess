@@ -103,6 +103,11 @@ namespace ChessWPF
                 }
             }
 
+            if (Game.KingInDanger != null)
+            {
+                this[(int)Game.KingInDanger.Value.X, (int)Game.KingInDanger.Value.Y]!.Background = Brushes.Red;
+            }
+
             DisplayPlayer.Text = "Active Player: " + Game.ActivePlayer;
             DisplaySelected.Text = "Selected Position: " + Game.ActivePosition;
         }
@@ -110,7 +115,21 @@ namespace ChessWPF
         private void ButtonClickHandler(object sender, RoutedEventArgs e)
         {
             if (sender is UIElement uie)
-                Game.UseField(Grid.GetRow(uie), Grid.GetColumn(uie));
+            {
+                var x = Grid.GetRow(uie);
+                var y = Grid.GetColumn(uie);
+                Game.UseField(x, y);
+
+                var pos = Game[x,y];
+                if (pos?.Figure != null)
+                {
+                    pos.SetRelLegalMoves();
+                    Game.KingInDanger = Game.LegalMoves
+                        .Select(pos => Game[pos])
+                        .FirstOrDefault(it => it?.Figure == Figure.King)?
+                        .Position;
+                }
+            }
         }
 
         private void ResetSelection(object sender, RoutedEventArgs e)
