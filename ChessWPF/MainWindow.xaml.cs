@@ -11,7 +11,9 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ChessAPI;
+using Brushes = System.Windows.Media.Brushes;
 using Color = System.Drawing.Color;
+using Image = System.Windows.Controls.Image;
 
 namespace ChessWPF
 {
@@ -132,22 +134,32 @@ namespace ChessWPF
                 var box = this[x, y];
                 var legal = Game.LegalMoves.Contains(vec);
 
-                if (box != null && (fig != null || legal))
+                if (box != null && fig != null)
                 {
                     // todo Emplace actual images
-                    //box.Content = FigureImages[(int)fig.Player, (int)fig.Figure];
-                    /* box string content
-                    box.Content = "";
-                    if (fig?.Player == Game.ActivePlayer)
-                        box.Content += fig.Player + "\n";
-                    box.Content += fig?.Figure.ToString() ?? "";
-                    if (Game.ActivePosition == vec)
-                        box.Content += '\n' + "SELECTED";
-                    if (legal)
-                        box.Content += '\n' + "LEGAL";
-                        */
+                    box.Content = new Image(){Width = 70,Source = FigureImages[(int)fig.Player, (int)fig.Figure]};
+                    if (Game.ActivePosition?.X == x && Game.ActivePosition?.Y == y)
+                        box.Background = Brushes.Blue;
+                    else box.Background = (x + y) % 2 == 0 ? Brushes.SaddleBrown : Brushes.SandyBrown;
+                        //box.Content = FigureImages[(int)fig.Player, (int)fig.Figure];
+                        /* box string content
+                        box.Content = "";
+                        if (fig?.Player == Game.ActivePlayer)
+                            box.Content += fig.Player + "\n";
+                        box.Content += fig?.Figure.ToString() ?? "";
+                        if (Game.ActivePosition == vec)
+                            box.Content += '\n' + "SELECTED";
+                        if (legal)
+                            box.Content += '\n' + "LEGAL";
+                            */
                 }
-                else if (box != null) box.Content = "";
+                else if (box != null && legal)
+                    box.Background = Brushes.Green;
+                else if (box != null && fig == null)
+                {
+                    box.Background = (x + y) % 2 == 0 ? Brushes.SaddleBrown : Brushes.SandyBrown;
+                    box.Content = "";
+                }
             }
 
             DisplayPlayer.Text = "Active Player: " + Game.ActivePlayer;
