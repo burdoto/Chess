@@ -12,15 +12,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
-        <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.9" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10" />
-        <PackageReference Include="Microsoft.Owin.Cors" Version="4.2.2" />
-        <PackageReference Include="Microsoft.Owin.Security.OAuth" Version="4.2.2" />
     </ItemGroup>
 
 </Project>
